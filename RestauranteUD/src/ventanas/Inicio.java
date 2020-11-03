@@ -44,7 +44,7 @@ public class Inicio extends JFrame {
 		registrarCuentaButton = new JButton("Registrar cuenta");
 		registrarCuentaButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//TODO llevar a registrar cuenta
+				RegistrarCliente.abrirRegistrarCliente();
 			}
 		});
 

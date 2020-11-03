@@ -122,7 +122,6 @@ public class Login extends JFrame {
 
 	public static void abrirLogin() {
 		Login login = new Login();
-		login.setVisible(true);
 		login.setSize(480,360);
 		login.setLocationRelativeTo(null);
 		login.setVisible(true);

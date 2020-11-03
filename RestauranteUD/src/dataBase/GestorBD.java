@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GestorBD {
+	
 	private static Exception lastError = null; //Último error que ha sucedido
 	private Connection conn;
 	private static Logger logger = null;

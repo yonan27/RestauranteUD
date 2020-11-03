@@ -67,7 +67,6 @@ public class Bienvenida extends JFrame {
 
 	public static void abrirBienvenida() {
 		Bienvenida bienvenida = new Bienvenida();
-		bienvenida.setVisible(true);
 		bienvenida.setSize(480,360);
 		bienvenida.setLocationRelativeTo(null);
 		bienvenida.setVisible(true);
