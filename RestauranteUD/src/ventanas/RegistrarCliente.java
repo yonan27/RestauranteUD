@@ -230,10 +230,12 @@ public class RegistrarCliente extends JFrame {
 	}
 
 	private boolean comprobarVacios() {
+		return rootPaneCheckingEnabled;
 		//TODO comprobar que no haya nada vacío
 	}
 
 	private boolean comprobarContraseñas() {
+		return rootPaneCheckingEnabled;
 		//TODO comprobar que las contraseñas coincidan
 	}
 
