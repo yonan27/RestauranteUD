@@ -1,6 +1,5 @@
 package ventanas;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -36,16 +35,18 @@ public class Bienvenida extends JFrame {
 
 		try { 
 			//TODO poner foto de fondo
-			fondo = new Fondo(ImageIO.read(new File("")));
+			fondo = new Fondo(ImageIO.read(new File("img/fondo.jpg")));
 			panel = (JPanel) this.getContentPane();
 
 			bienvenida = new JLabel("Bienvenido al restaurante");
+			bienvenida.setBounds(0, 88, 464, 37);
 			bienvenida.setFont(new Font("Tahoma", Font.BOLD, 30));
-			bienvenida.setVerticalAlignment(SwingConstants.CENTER);
+			bienvenida.setVerticalAlignment(SwingConstants.TOP);
 			bienvenida.setHorizontalAlignment(SwingConstants.CENTER);
-			bienvenida.setForeground(Color.PINK);
+			bienvenida.setForeground(new Color(128, 0, 0));
 
 			accederButton = new JButton("Acceder");
+			accederButton.setBounds(0, 298, 464, 23);
 			accederButton.addActionListener(new ActionListener() {
 
 				@Override
@@ -54,9 +55,10 @@ public class Bienvenida extends JFrame {
 					dispose();
 				}
 			});
+			getContentPane().setLayout(null);
 
-			getContentPane().add(bienvenida, BorderLayout.CENTER);
-			getContentPane().add(accederButton, BorderLayout.SOUTH);
+			getContentPane().add(bienvenida);
+			getContentPane().add(accederButton);
 
 			panel.setBorder(fondo);
 		} catch (IOException ex) {
