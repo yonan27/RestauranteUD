@@ -67,7 +67,7 @@ public class GestorBD {
 				t.setNombre(campos[3]);
 				t.setApellidos(campos[4]);
 				t.setFechaNacimientoString(campos[6]);
-				t.setSueldo(Interger.parseInt(campos[7]));
+				t.setSueldo(Integer.parseInt(campos[7]));
 				t.setGerente(Boolean.parseBoolean(campos[8]));
 				trabajadores.add(t);
 			}
