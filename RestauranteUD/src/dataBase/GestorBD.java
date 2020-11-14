@@ -2,14 +2,24 @@ package dataBase;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.List;
+import java.util.ArrayList;
+import java.io.File;
+import java.util.Scanner;
+import java.util.Iterator;
+
+
+import model.Cliente;
+import model.Trabajador;
 
 public class GestorBD {
 	
-	private static Exception lastError = null; //Último error que ha sucedido
+	private static Exception lastError = null; //ï¿½ltimo error que ha sucedido
 	private Connection conn;
 	private static Logger logger = null;
 
@@ -24,7 +34,7 @@ public class GestorBD {
 			log(Level.INFO, "Conectado a la base de datos", null);
 		} catch (ClassNotFoundException | SQLException e) {
 			setLastError(e);
-			log(Level.SEVERE, "Error en conexión de base de datos ", e);
+			log(Level.SEVERE, "Error en conexion de base de datos ", e);
 			e.printStackTrace();
 		}
 	}
@@ -38,12 +48,116 @@ public class GestorBD {
 			e.printStackTrace();
 		}
 	}
+	private void importarClientes() {
+		List<Trabajador> trabajadores = new ArrayList<Trabajador>();
+		File f = null;
+		Scanner sc = null;
+		try {
+			f = new File("ficheros/trabajadores.csv");
+			sc = new Scanner(f);
+			while(sc.hasNextLine()) {
+				String linea = sc.nextLine();
+				
+				Trabajador t = new Trabajador();
+				String[] campos = linea.split(";");
+				
+				t.setUsuario(campos[0]);
+				t.setContra(campos[1]);
+				t.setEmail(campos[2]);
+				t.setNombre(campos[3]);
+				t.setApellidos(campos[4]);
+				t.setFechaNacimientoString(campos[6]);
+				t.setSueldo(Interger.parseInt(campos[7]));
+				t.setGerente(Boolean.parseBoolean(campos[8]));
+				trabajadores.add(t);
+			}
+			sc.close();
+			log(Level.INFO,"Trabajadores cargados desde el fichero", null);
+		}catch(Exception e) {
+			log(Level.SEVERE, "Error al cargar trabajadores desde el fichero", null);
+		}
+			Iterator<Trabajador>it = trabajadores.iterator();
+			while(it.hasNext()) {
+				Trabajador t = it.next();
+				anadirNuevoTrabajador(t);
+		}	
+		log(Level.INFO, "Trabajadores anadidos a la base de datos", null);
+	}
+	public Cliente iniciarSesionCliente(String usuario, String contra){
+		List<Cliente> clientes = obtenerClientes();
 
-	// Método público para asignar un logger externo
+		Iterator<Cliente> itClientes = clientes.iterator();
+
+		while (itClientes.hasNext()) {
+			Cliente c = itClientes.next();
+
+			String login = c.getUsuario();
+			String password = c.getContra();
+
+			if (login.equals(usuario)) {
+				if (password.equals(contra)) {
+					return c;
+				}
+			}	
+		}
+		return null;
+	}
+
+
+	public void anadirNuevoTrabajador(Trabajador t) {
+		String sql = "INSERT INTO trabajador (usuario, contrasena, email, nombre, apellidos, fechaNacimiento, sueldo, gerente)" + "VALUES(?,?,?,?,?,?,?,?,?)" ;
+		PreparedStatement stmt;
+		try {
+			stmt = conn.prepareStatement (sql);
+			stmt.setString(1 , t.getUsuario());
+			stmt.setString(2 , t.getContra());
+			stmt.setString(3 , t.getEmail());
+			stmt.setString(4 , t.getNombre());
+			stmt.setString(5 , t.getApellidos());
+			stmt.setString(6 , t.getFechaNaciminetoString());
+			stmt.setString(7 , t.getDireccion());
+			stmt.setInt(8 , t.getSueldo());
+			if (t.isGerente()) {
+				stmt.setInt(9,1);
+			} else {
+				stmt.setInt(9,0);
+			}
+			stmt.executeUpdate();
+			log(Level.INFO, "el trabajador"+ t.getNombre()+ "ha sido anadido",null);
+			
+		} catch (SQLException e) {
+			log(Level.SEVERE , "error al insertar el trabajador" + sql, e );
+			setLastError(e);
+			e.printStackTrace();
+		}
+	}
+	public Trabajador iniciarSesionTrabajador(String usuario, String contra){
+		List<Trabajador> trabajadores = obtenerTrabajadores();
+
+		Iterator<Trabajador> itTrabajadores = trabajadores.iterator();
+
+		while (itTrabajadores.hasNext()) {
+			Trabajador t = itTrabajadores.next();
+
+			String login = t.getUsuario();
+			String password = t.getContra();
+
+			if (login.equals(usuario)) {
+				if (password.equals(contra)) {
+					return t;
+				}
+			}	
+		}
+		return null;
+	}
+	
+	
+	
+	// Mï¿½todo pï¿½blico para asignar un logger externo
 	public static void setLogger( Logger logger ) {
 		GestorBD.logger = logger;
 	}
-	// Método local para loggear (si no se asigna un logger externo, se asigna uno local)
+	// Mï¿½todo local para loggear (si no se asigna un logger externo, se asigna uno local)
 	private static void log( Level level, String msg, Throwable excepcion ) {
 		if (logger==null) {  // Logger por defecto local:
 			logger = Logger.getLogger( GestorBD.class.getName() );  // Nombre del logger - el de la clase

@@ -18,6 +18,10 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import dataBase.GestorBD;
+import model.Cliente;
+import model.Trabajador;
+
 public class Login extends JFrame {
 
 	/**
@@ -75,7 +79,7 @@ public class Login extends JFrame {
 		passwordBox.add(Box.createRigidArea(new Dimension(10,0)));
 		passwordBox.add(passwordField);
 
-		falloInicio = new JLabel("Usuario o contraseña incorrecta");
+		falloInicio = new JLabel("Usuario o contrasena incorrecta");
 		falloInicio.setForeground(Color.RED);
 		falloInicio.setVisible(false);
 
@@ -117,7 +121,31 @@ public class Login extends JFrame {
 	}
 
 	private void iniciarSesion() {
-		//TODO inicia sesión
+		try {
+			GestorBD bd = new GestorBD();
+			String usuario = loginField.getText();
+			String contra = new String(passwordField.getPassword());
+			Cliente c = bd.iniciarSesionCliente(usuario, contra);
+			Trabajador t = bd.iniciarSesionTrabajador(usuario, contra);
+			bd.desconectar();
+			if(c!= null) {
+				VistaCliente.abrirVistaCliente(c);
+				dispose();
+			}else if(t!= null){
+				if(t.isGerente()) {
+					VistaGerente.abrirVistaGerente(t);
+				}else {
+					VistaTrabajador.abrirVistaTrabajador(t);
+				}
+				dispose();
+			}else {
+				falloInicio.setVisible(true);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			System.out.println("no conecta a la BD");
+		}
+	
 	}
 
 	public static void abrirLogin() {

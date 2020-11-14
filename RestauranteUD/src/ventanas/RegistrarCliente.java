@@ -88,7 +88,7 @@ public class RegistrarCliente extends JFrame {
 		usuarioBox.add(Box.createRigidArea(new Dimension(29, 12)));
 		usuarioBox.add(usuarioField);
 
-		passwordLabel = new JLabel("Contraseña:");
+		passwordLabel = new JLabel("Contraseï¿½a:");
 		passwordField = new JPasswordField(12);
 
 		passwordBox = new Box(BoxLayout.X_AXIS);
@@ -96,7 +96,7 @@ public class RegistrarCliente extends JFrame {
 		passwordBox.add(Box.createRigidArea(new Dimension(71, 12)));
 		passwordBox.add(passwordField);
 
-		passwordRLabel = new JLabel("Repita la contraseña:");
+		passwordRLabel = new JLabel("Repita la contraseï¿½a:");
 		passwordRField = new JPasswordField(12);
 
 		passwordRBox = new Box(BoxLayout.X_AXIS);
@@ -146,7 +146,7 @@ public class RegistrarCliente extends JFrame {
 		fechaNacimientoBox.add(Box.createRigidArea(new Dimension(39,0)));
 		fechaNacimientoBox.add(fechaNacimientoCalendario);
 
-		numeroTarjetaLabel = new JLabel("Número de tarjeta:");
+		numeroTarjetaLabel = new JLabel("Nï¿½mero de tarjeta:");
 		numeroTarjetaField = new JTextField();
 
 		numeroTarjetaBox = new Box(BoxLayout.X_AXIS);
@@ -225,17 +225,17 @@ public class RegistrarCliente extends JFrame {
 
 	private boolean comprobarVacios() {
 		return rootPaneCheckingEnabled;
-		//TODO comprobar que no haya nada vacío
+		//TODO comprobar que no haya nada vacio
 	}
 
-	private boolean comprobarContraseñas() {
+	private boolean comprobarContraseÃ±as() {
 		return rootPaneCheckingEnabled;
-		//TODO comprobar que las contraseñas coincidan
+		//TODO comprobar que las contraseÃ±as coincidan
 	}
 
 	public static void abrirRegistrarCliente() {
 		RegistrarCliente registrarCliente = new RegistrarCliente();
-		registrarCliente.setTitle("Regístrate");
+		registrarCliente.setTitle("Regastrate");
 		registrarCliente.setVisible(true);
 		registrarCliente.setSize(480,420);
 		registrarCliente.setLocationRelativeTo(null);
