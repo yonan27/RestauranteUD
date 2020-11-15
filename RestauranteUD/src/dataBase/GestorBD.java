@@ -151,7 +151,7 @@ public List<Cliente> obtenerClientes() {
 			stmt.setString(3 , t.getEmail());
 			stmt.setString(4 , t.getNombre());
 			stmt.setString(5 , t.getApellidos());
-			stmt.setString(6 , t.getFechaNaciminetoString());
+			stmt.setString(6 , t.getFechaNacimientoString());
 			stmt.setString(7 , t.getDireccion());
 			stmt.setInt(8 , t.getSueldo());
 			if (t.isGerente()) {
