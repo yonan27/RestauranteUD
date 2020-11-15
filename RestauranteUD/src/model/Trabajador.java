@@ -15,12 +15,12 @@ public class Trabajador extends Persona{
 		this.isGerente = isGerente;
 	}
 	public Trabajador() {
-		super();
+		super("","","","","",null,"");
 		this.sueldo = 0;
 		this.isGerente = false;
 	}
 	public Trabajador(Trabajador t) {
-		super("","","","","",null,"");
+		super(t.usuario,t.contra,t.email,t.nombre,t.apellidos,t.fechaNacimiento,t.direccion);
 		this.sueldo = t.sueldo;
 		this.isGerente = t.isGerente;
 	}
