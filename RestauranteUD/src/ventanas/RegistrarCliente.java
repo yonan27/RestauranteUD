@@ -240,7 +240,7 @@ public class RegistrarCliente extends JFrame {
 
 	public static void abrirRegistrarCliente() {
 		RegistrarCliente registrarCliente = new RegistrarCliente();
-		registrarCliente.setTitle("Regastrate");
+		registrarCliente.setTitle("Registrate");
 		registrarCliente.setVisible(true);
 		registrarCliente.setSize(480,420);
 		registrarCliente.setLocationRelativeTo(null);

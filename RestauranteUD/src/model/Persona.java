@@ -13,10 +13,12 @@ public class Persona {
 	protected String nombre;
 	protected String apellidos;
 	protected Date fechaNacimiento;
+	protected String direccion;
 	public static SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+	
+	public Persona(String usuario, String contra, String email, String dNI, String nombre, String apellidos, 
+			Date fechaNacimiento, String direccion) {
 
-	public Persona(String usuario, String contra, String email, String dNI, String nombre, String apellidos,
-			Date fechaNacimiento) {
 		super();
 		this.usuario = usuario;
 		this.contra = contra;
@@ -46,7 +48,8 @@ public class Persona {
 		this.dNI = p.dNI;
 		this.nombre = p.nombre;
 		this.apellidos = p.apellidos;
-		this.fechaNacimiento = p.fechaNacimiento;
+		this.fechaNacimiento = null;
+		this.direccion =p.direccion;
 	}
 
 	public String getUsuario() {
@@ -103,10 +106,6 @@ public class Persona {
 
 	public String getFechaNacimientoString() {
 		return df.format(fechaNacimiento);
-	}
-
-	public void setFechaNacimiento(Date fechaNacimiento) {
-		this.fechaNacimiento = fechaNacimiento;
 	}
 
 	public void setFechaNacimientoString (String fechaNacimiento) throws ParseException {

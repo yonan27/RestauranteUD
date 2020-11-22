@@ -19,7 +19,7 @@ public class Inicio extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-//	NO TOCAR
+
 	private JPanel opcionesPanel;
 	private Box buttonsBox;
 	private JButton iniciarSesionButton;

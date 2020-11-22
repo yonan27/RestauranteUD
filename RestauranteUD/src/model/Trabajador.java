@@ -8,20 +8,20 @@ public class Trabajador extends Persona{
 	private boolean isGerente;
 	
 	public Trabajador(String usuario, String contra, String email, String dNI, String nombre, String apellidos,
-			Date fechaNacimiento, int sueldo, boolean isGerente) {
-		super(usuario, contra, email, dNI, nombre, apellidos, fechaNacimiento);
+			Date fechaNacimiento, String direccion, int sueldo, boolean isGerente) {
+		super(usuario, contra, email, dNI, nombre, apellidos, fechaNacimiento, direccion);
 		this.sueldo = sueldo;
 		this.isGerente = isGerente;
 	}
-	
+
 	public Trabajador(Trabajador t) {
-		super(t.usuario, t.contra, t.email, t.dNI, t.nombre, t.apellidos, t.fechaNacimiento);
+		super(t.usuario,t.contra,t.email,t.dNI, t.nombre,t.apellidos,t.fechaNacimiento,t.direccion);
 		this.sueldo = t.sueldo;
 		this.isGerente = t.isGerente;
 	}
 	
 	public Trabajador() {
-		super("", "", "", "", "", "", new Date());
+		super("", "", "", "", "", "", new Date(), "");
 		this.sueldo = 0;
 		this.isGerente = false;
 	}
