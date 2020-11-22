@@ -34,7 +34,6 @@ public class Bienvenida extends JFrame {
 		this.setResizable(true);
 
 		try { 
-			//TODO poner foto de fondo
 			fondo = new Fondo(ImageIO.read(new File("img/fondo.jpg")));
 			panel = (JPanel) this.getContentPane();
 

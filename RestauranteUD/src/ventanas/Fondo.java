@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.border.Border;
 
 public class Fondo implements Border {
-	//NO TOCAR
+
 	private BufferedImage mImagen = null;
 
 	public Fondo(BufferedImage pImagen) {

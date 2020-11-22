@@ -145,7 +145,7 @@ public class Login extends JFrame {
 			e.printStackTrace();
 			System.out.println("no conecta a la BD");
 		}
-	
+
 	}
 
 	public static void abrirLogin() {

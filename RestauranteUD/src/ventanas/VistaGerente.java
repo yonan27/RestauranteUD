@@ -1,5 +1,27 @@
 package ventanas;
 
-public class VistaGerente {
+import javax.swing.JFrame;
 
+import model.Trabajador;
+
+public class VistaGerente extends JFrame {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public VistaGerente (Trabajador t) {
+		//TODO ventana entera
+
+
+	}
+
+	public static void abrirVistaGerente(Trabajador t) {
+		VistaGerente vistaGerente = new VistaGerente(t);
+		vistaGerente.setTitle("Vista cliente");
+		vistaGerente.setSize(480,360);
+		vistaGerente.setLocationRelativeTo(null);
+		vistaGerente.setVisible(true);
+	}
 }

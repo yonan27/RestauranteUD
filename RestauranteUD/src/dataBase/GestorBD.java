@@ -3,23 +3,22 @@ package dataBase;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.List;
-import java.util.ArrayList;
-import java.io.File;
-import java.util.Scanner;
-import java.util.Iterator;
-
 
 import model.Cliente;
 import model.Trabajador;
 
 public class GestorBD {
 	
-	private static Exception lastError = null; //�ltimo error que ha sucedido
+	private static Exception lastError = null; //Ultimo error que ha sucedido
 	private Connection conn;
 	private static Logger logger = null;
 
@@ -48,41 +47,6 @@ public class GestorBD {
 			e.printStackTrace();
 		}
 	}
-	private void importarClientes() {
-		List<Trabajador> trabajadores = new ArrayList<Trabajador>();
-		File f = null;
-		Scanner sc = null;
-		try {
-			f = new File("ficheros/trabajadores.csv");
-			sc = new Scanner(f);
-			while(sc.hasNextLine()) {
-				String linea = sc.nextLine();
-				
-				Trabajador t = new Trabajador();
-				String[] campos = linea.split(";");
-				
-				t.setUsuario(campos[0]);
-				t.setContra(campos[1]);
-				t.setEmail(campos[2]);
-				t.setNombre(campos[3]);
-				t.setApellidos(campos[4]);
-				t.setFechaNacimientoString(campos[6]);
-				t.setSueldo(Interger.parseInt(campos[7]));
-				t.setGerente(Boolean.parseBoolean(campos[8]));
-				trabajadores.add(t);
-			}
-			sc.close();
-			log(Level.INFO,"Trabajadores cargados desde el fichero", null);
-		}catch(Exception e) {
-			log(Level.SEVERE, "Error al cargar trabajadores desde el fichero", null);
-		}
-			Iterator<Trabajador>it = trabajadores.iterator();
-			while(it.hasNext()) {
-				Trabajador t = it.next();
-				anadirNuevoTrabajador(t);
-		}	
-		log(Level.INFO, "Trabajadores anadidos a la base de datos", null);
-	}
 	public Cliente iniciarSesionCliente(String usuario, String contra){
 		List<Cliente> clientes = obtenerClientes();
 
@@ -102,7 +66,44 @@ public class GestorBD {
 		}
 		return null;
 	}
+	
+	public List<Cliente> obtenerClientes(){
+		String sql = "SELECT usuario, contrasena, email, dNI, nombre, apellidos, fechaNacimiento, numTarjeta FROM cliente";
+		PreparedStatement stmt;
 
+		List<Cliente> clientes = new ArrayList<Cliente>();
+
+		try {
+			stmt = conn.prepareStatement(sql);
+
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()){
+
+				Cliente c = new Cliente();
+				c.setUsuario(rs.getString("usuario"));
+				c.setContra(rs.getString("contrasena"));
+				c.setEmail(rs.getString("email"));
+				c.setdNI(rs.getString("dNI"));
+				c.setNombre(rs.getString("nombre"));
+				c.setApellidos(rs.getString("apellidos"));
+				try {
+					c.setFechaNacimientoString(rs.getString("fechaNacimiento"));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				c.setNumTarjeta(rs.getLong("numTarjeta"));
+
+				clientes.add(c);
+			}
+
+			log(Level.INFO, "Obteniendo los clientes", null);
+		} catch (SQLException e) {
+			log(Level.SEVERE, "Error al obtener los clientes", e);
+			e.printStackTrace();
+		}
+		return clientes;
+	}
 
 	public void anadirNuevoTrabajador(Trabajador t) {
 		String sql = "INSERT INTO trabajador (usuario, contrasena, email, nombre, apellidos, fechaNacimiento, sueldo, gerente)" + "VALUES(?,?,?,?,?,?,?,?,?)" ;
@@ -114,8 +115,6 @@ public class GestorBD {
 			stmt.setString(3 , t.getEmail());
 			stmt.setString(4 , t.getNombre());
 			stmt.setString(5 , t.getApellidos());
-			stmt.setString(6 , t.getFechaNaciminetoString());
-			stmt.setString(7 , t.getDireccion());
 			stmt.setInt(8 , t.getSueldo());
 			if (t.isGerente()) {
 				stmt.setInt(9,1);
@@ -131,6 +130,50 @@ public class GestorBD {
 			e.printStackTrace();
 		}
 	}
+	
+	public List<Trabajador> obtenerTrabajadores(){
+		String sql = "SELECT usuario, contrasena, email, dNI, nombre, apellidos, fechaNacimiento, sueldo, isAdmin FROM trabajador";
+		PreparedStatement stmt;
+
+		List<Trabajador> trabajadores = new ArrayList<Trabajador>();
+
+		try {
+			stmt = conn.prepareStatement(sql);
+
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()){
+
+				Trabajador t = new Trabajador();
+				t.setUsuario(rs.getString("usuario"));
+				t.setContra(rs.getString("contrasena"));
+				t.setEmail(rs.getString("email"));
+				t.setdNI(rs.getString("dNI"));
+				t.setNombre(rs.getString("nombre"));
+				t.setApellidos(rs.getString("apellidos"));
+				try {
+					t.setFechaNacimientoString(rs.getString("fechaNacimiento"));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				t.setSueldo(rs.getInt("sueldo"));
+
+				if (rs.getInt("isAdmin") == 0) {
+					t.setGerente(false);
+				} else {
+					t.setGerente(true);
+				}
+
+				trabajadores.add(t);
+			}
+			log(Level.INFO, "Obteniendo los trabajadores", null);
+		} catch (SQLException e) {
+			log(Level.SEVERE, "Error al obtener los trabajadores", e);
+			e.printStackTrace();
+		}
+		return trabajadores;
+	}
+	
 	public Trabajador iniciarSesionTrabajador(String usuario, String contra){
 		List<Trabajador> trabajadores = obtenerTrabajadores();
 
@@ -153,11 +196,11 @@ public class GestorBD {
 	
 	
 	
-	// M�todo p�blico para asignar un logger externo
+	// Metodo publico para asignar un logger externo
 	public static void setLogger( Logger logger ) {
 		GestorBD.logger = logger;
 	}
-	// M�todo local para loggear (si no se asigna un logger externo, se asigna uno local)
+	// Metodo local para loggear (si no se asigna un logger externo, se asigna uno local)
 	private static void log( Level level, String msg, Throwable excepcion ) {
 		if (logger==null) {  // Logger por defecto local:
 			logger = Logger.getLogger( GestorBD.class.getName() );  // Nombre del logger - el de la clase

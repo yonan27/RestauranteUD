@@ -3,27 +3,23 @@ package model;
 import java.util.Date;
 
 public class Cliente extends Persona {
-	
+
 	private long numTarjeta;
-	private Suscripcion suscripcion;
-	
-<<<<<<< Updated upstream
-	public Cliente(long numTarjeta, Suscripcion suscripcion) {
-		super();
-=======
-	public Cliente(String usuario, String contra, String email, String nombre, String apellidos, Date fechaNacimiento,
-			String direccion, long numTarjeta, Suscripcion suscripcion) {
-		super(usuario, contra, email, nombre, apellidos, fechaNacimiento, direccion);
->>>>>>> Stashed changes
+
+	public Cliente(String usuario, String contra, String email, String dNI, String nombre, String apellidos,
+			Date fechaNacimiento, long numTarjeta) {
+		super(usuario, contra, email, dNI, nombre, apellidos, fechaNacimiento);
 		this.numTarjeta = numTarjeta;
-		this.suscripcion = suscripcion;
 	}
-	
+
 	public Cliente() {
-		super();
-<<<<<<< Updated upstream
-		this.numTarjeta = 0;
-		this.suscripcion = null;
+		super("", "", "", "", "", "", null);
+		this.numTarjeta = 0000000000000000;
+	}
+
+	public Cliente(Cliente c) {
+		super(c.usuario, c.contra, c.email, c.dNI, c.nombre, c.apellidos, c.fechaNacimiento);
+		this.numTarjeta = c.numTarjeta;
 	}
 
 	public long getNumTarjeta() {
@@ -34,47 +30,9 @@ public class Cliente extends Persona {
 		this.numTarjeta = numTarjeta;
 	}
 
-	public Suscripcion getSuscripcion() {
-		return suscripcion;
-	}
-
-	public void setSuscripcion(Suscripcion suscripcion) {
-		this.suscripcion = suscripcion;
-	}
-
 	@Override
 	public String toString() {
-		return "Cliente [numTarjeta=" + numTarjeta + ", suscripcion=" + suscripcion + "]";
+		return "Cliente [numTarjeta=" + numTarjeta + ", usuario=" + usuario + ", contra=" + contra + ", email=" + email
+				+ ", nombre=" + nombre + ", apellidos=" + apellidos + ", fechaNacimiento=" + fechaNacimiento + "]";
 	}
-	
-	
-	
-=======
-		this.numTarjeta = 000000;
-		this.suscripcion = suscripcion;
-	
-	}
->>>>>>> Stashed changes
-
-	public long getNumTarjeta() {
-		return numTarjeta;
-	}
-
-	public void setNumTarjeta(long numTarjeta) {
-		this.numTarjeta = numTarjeta;
-	}
-
-	public Suscripcion getSuscripcion() {
-		return suscripcion;
-	}
-
-	public void setSuscripcion(Suscripcion suscripcion) {
-		this.suscripcion = suscripcion;
-	}
-
-	@Override
-	public String toString() {
-		return "Cliente [numTarjeta=" + numTarjeta + ", suscripcion=" + suscripcion + "]";
-	}
-	
 }

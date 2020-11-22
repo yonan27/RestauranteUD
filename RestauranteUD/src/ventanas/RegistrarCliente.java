@@ -181,14 +181,14 @@ public class RegistrarCliente extends JFrame {
 		acceptButton = new JButton("Registrarme");
 		acceptButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				//TODO registrar usuario
+				registrar();
 			}
 		});
 
 		cancelButton = new JButton("Cancelar");
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//TODO volver
+				volver();
 			}
 		});
 
@@ -204,11 +204,11 @@ public class RegistrarCliente extends JFrame {
 	}
 
 	private void volver() {
+		//TODO volver
 
 	}
 
 	private void limpiarCajas() {
-		//TODO limpiar cajas
 		usuarioField.setText(null);
 		passwordField.setText(null);
 		passwordRField.setText(null);
@@ -220,16 +220,21 @@ public class RegistrarCliente extends JFrame {
 	}
 
 	private void registrar() {
+		comprobarVacios();
+		comprobarContrasenas();
+
 		//TODO registrar nuevo usuario
+
+		limpiarCajas();
 	}
 
 	private boolean comprobarVacios() {
-		return rootPaneCheckingEnabled;
+		return false;
 		//TODO comprobar que no haya nada vacio
 	}
 
-	private boolean comprobarContraseñas() {
-		return rootPaneCheckingEnabled;
+	private boolean comprobarContrasenas() {
+		return false;
 		//TODO comprobar que las contraseñas coincidan
 	}
 
