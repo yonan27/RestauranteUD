@@ -19,8 +19,8 @@ import model.Cliente;
 import model.Trabajador;
 
 public class GestorBD {
-	
-	private static Exception lastError = null; //Ultimo error que ha sucedido
+
+	private static Exception lastError = null; // Ultimo error que ha sucedido
 
 	private Connection conn;
 	private static Logger logger = null;
@@ -29,7 +29,7 @@ public class GestorBD {
 		conectar();
 	}
 
-	private void conectar(){
+	private void conectar() {
 		try {
 			Class.forName("org.sqlite.JDBC");
 			conn = DriverManager.getConnection("jdbc:sqlite:ficheros/baseDeDatos.db");
@@ -41,7 +41,7 @@ public class GestorBD {
 		}
 	}
 
-	public void desconectar(){
+	public void desconectar() {
 		try {
 			conn.close();
 			log(Level.INFO, "Desconectado de la base de datos", null);
@@ -51,7 +51,7 @@ public class GestorBD {
 		}
 	}
 
-	public Cliente iniciarSesionCliente(String usuario, String contra){
+	public Cliente iniciarSesionCliente(String usuario, String contra) {
 		List<Cliente> clientes = obtenerClientes();
 
 		Iterator<Cliente> itClientes = clientes.iterator();
@@ -66,17 +66,17 @@ public class GestorBD {
 				if (password.equals(contra)) {
 					return c;
 				}
-			}	
+			}
 		}
 		return null;
 	}
-	
-public List<Cliente> obtenerClientes() {
-		
+
+	public List<Cliente> obtenerClientes() {
+
 		String sql = "SELECT usuario, contra, email, nombre , apellidos , fechaNacimiento,numTarjeta,suscrpcion ,FROM cliente";
 		PreparedStatement stmt;
 		List<Cliente> clientes = new ArrayList<Cliente>();
-		
+
 		try {
 			stmt = conn.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
@@ -93,46 +93,74 @@ public List<Cliente> obtenerClientes() {
 					e.printStackTrace();
 				}
 				c.setNumTarjeta(rs.getLong("numTarjeta"));
-				
+
 				clientes.add(c);
 			}
-			log(Level.INFO, "obtener trbajadores",null);
+			log(Level.INFO, "obtener trbajadores", null);
 		} catch (SQLException e) {
-			log(Level.SEVERE, "error al obtener trabajadores",e);
+			log(Level.SEVERE, "error al obtener trabajadores", e);
 			e.printStackTrace();
 		}
-		
+
 		return clientes;
-		
+
 	}
 
-	public void anadirNuevoTrabajador(Trabajador t) {
-		String sql = "INSERT INTO trabajador (usuario, contrasena, email, nombre, apellidos, fechaNacimiento, sueldo, gerente)" + "VALUES(?,?,?,?,?,?,?,?,?)" ;
+	public void anadirNuevoCliente(Cliente c) {
+		String sql = "INSERT INTO cliente (login, password, email, dNI, nombre, apellidos, fechaNacimiento, numTarjeta)"
+				+ " VALUES (?,?,?,?,?,?,?,?)";
+
 		PreparedStatement stmt;
 		try {
-			stmt = conn.prepareStatement (sql);
-			stmt.setString(1 , t.getUsuario());
-			stmt.setString(2 , t.getContra());
-			stmt.setString(3 , t.getEmail());
-			stmt.setString(4 , t.getNombre());
-			stmt.setString(5 , t.getApellidos());
-			stmt.setInt(8 , t.getSueldo());
-			if (t.isGerente()) {
-				stmt.setInt(9,1);
-			} else {
-				stmt.setInt(9,0);
-			}
+			stmt = conn.prepareStatement(sql);
+
+			stmt.setString(1, c.getUsuario());
+			stmt.setString(2, c.getContra());
+			stmt.setString(3, c.getEmail());
+			stmt.setString(4, c.getdNI());
+			stmt.setString(5, c.getNombre());
+			stmt.setString(6, c.getApellidos());
+			stmt.setString(7, c.getFechaNacimientoString());
+			stmt.setLong(8, c.getNumTarjeta());
+
 			stmt.executeUpdate();
-			log(Level.INFO, "el trabajador"+ t.getNombre()+ "ha sido anadido",null);
-			
+
+			log(Level.INFO, "El cliente " + c.getNombre() + " ha sido añadido", null);
 		} catch (SQLException e) {
-			log(Level.SEVERE , "error al insertar el trabajador" + sql, e );
+			log(Level.SEVERE, "Error al insertar el cliente" + sql, e);
 			setLastError(e);
 			e.printStackTrace();
 		}
 	}
-	
-	public Trabajador iniciarSesionTrabajador(String usuario, String contra){
+
+	public void anadirNuevoTrabajador(Trabajador t) {
+		String sql = "INSERT INTO trabajador (usuario, contrasena, email, nombre, apellidos, fechaNacimiento, sueldo, gerente)"
+				+ "VALUES(?,?,?,?,?,?,?,?,?)";
+		PreparedStatement stmt;
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, t.getUsuario());
+			stmt.setString(2, t.getContra());
+			stmt.setString(3, t.getEmail());
+			stmt.setString(4, t.getNombre());
+			stmt.setString(5, t.getApellidos());
+			stmt.setInt(8, t.getSueldo());
+			if (t.isGerente()) {
+				stmt.setInt(9, 1);
+			} else {
+				stmt.setInt(9, 0);
+			}
+			stmt.executeUpdate();
+			log(Level.INFO, "el trabajador" + t.getNombre() + "ha sido anadido", null);
+
+		} catch (SQLException e) {
+			log(Level.SEVERE, "error al insertar el trabajador" + sql, e);
+			setLastError(e);
+			e.printStackTrace();
+		}
+	}
+
+	public Trabajador iniciarSesionTrabajador(String usuario, String contra) {
 		List<Trabajador> trabajadores = obtenerTrabajadores();
 
 		Iterator<Trabajador> itTrabajadores = trabajadores.iterator();
@@ -147,17 +175,17 @@ public List<Cliente> obtenerClientes() {
 				if (password.equals(contra)) {
 					return t;
 				}
-			}	
+			}
 		}
 		return null;
 	}
-	
+
 	public List<Trabajador> obtenerTrabajadores() {
-		
+
 		String sql = "SELECT usuario, contra, email, nombre , apellidos , fechaNacimiento,sueldo, isGerente FROM trabajador";
 		PreparedStatement stmt;
 		List<Trabajador> trabajadores = new ArrayList<Trabajador>();
-		
+
 		try {
 			stmt = conn.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
@@ -181,37 +209,38 @@ public List<Cliente> obtenerClientes() {
 				}
 				trabajadores.add(t);
 			}
-			log(Level.INFO, "obtener trbajadores",null);
+			log(Level.INFO, "obtener trbajadores", null);
 		} catch (SQLException e) {
-			log(Level.SEVERE, "error al obtener trabajadores",e);
+			log(Level.SEVERE, "error al obtener trabajadores", e);
 			e.printStackTrace();
 		}
-		
+
 		return trabajadores;
-		
+
 	}
-	
-	
+
 	// Metodo publico para asignar un logger externo
-	public static void setLogger( Logger logger ) {
+	public static void setLogger(Logger logger) {
 		GestorBD.logger = logger;
 	}
-	// Metodo local para loggear (si no se asigna un logger externo, se asigna uno local)
-	private static void log( Level level, String msg, Throwable excepcion ) {
-		if (logger==null) {  // Logger por defecto local:
-			logger = Logger.getLogger( GestorBD.class.getName() );  // Nombre del logger - el de la clase
-			logger.setLevel( Level.ALL );  // Loguea todos los niveles
+
+	// Metodo local para loggear (si no se asigna un logger externo, se asigna uno
+	// local)
+	private static void log(Level level, String msg, Throwable excepcion) {
+		if (logger == null) { // Logger por defecto local:
+			logger = Logger.getLogger(GestorBD.class.getName()); // Nombre del logger - el de la clase
+			logger.setLevel(Level.ALL); // Loguea todos los niveles
 			try {
-				// logger.addHandler( new FileHandler( "bd-" + System.currentTimeMillis() + ".log.xml" ) );  // Y saca el log a fichero xml
-				logger.addHandler( new FileHandler("logger.xml", true ) );  // Y saca el log a fichero xml
+				// logger.addHandler( new FileHandler( "bd-" + System.currentTimeMillis() +
+				// ".log.xml" ) ); // Y saca el log a fichero xml
+				logger.addHandler(new FileHandler("logger.xml", true)); // Y saca el log a fichero xml
 			} catch (Exception e) {
-				logger.log( Level.SEVERE, "No se pudo crear fichero de log", e );
+				logger.log(Level.SEVERE, "No se pudo crear fichero de log", e);
 			}
 		}
-		if (excepcion==null) {
+		if (excepcion == null) {
 			logger.log(level, msg);
-		}
-		else {
+		} else {
 			logger.log(level, msg, excepcion);
 		}
 	}

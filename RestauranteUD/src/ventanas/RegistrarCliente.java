@@ -5,18 +5,23 @@ import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JSpinnerDateEditor;
+
+import dataBase.GestorBD;
+import model.Cliente;
 
 public class RegistrarCliente extends JFrame {
 
@@ -66,8 +71,7 @@ public class RegistrarCliente extends JFrame {
 
 		bienvenidaPanel = new JPanel();
 
-		//TODO poner frase de bienvenida
-		String bienvenida = "<html><body><center></center></body></html>";
+		String bienvenida = "<html><body><center> Bienvenido a RestauranteUD </center></body></html>";
 
 		bienvenidaLabel = new JLabel(bienvenida);
 		bienvenidaPanel.add(bienvenidaLabel);
@@ -220,22 +224,104 @@ public class RegistrarCliente extends JFrame {
 	}
 
 	private void registrar() {
-		comprobarVacios();
-		comprobarContrasenas();
+		try {
 
-		//TODO registrar nuevo usuario
+			if (comprobarVacios()) {
+				return;
+			}
 
-		limpiarCajas();
+			if (comprobarContrasenas()) {
+				return;
+			}
+
+			Date fechaNacimiento = fechaNacimientoCalendario.getDate();
+			String usuario = usuarioField.getText();
+			String contra = new String(passwordField.getPassword());;
+			String email = emailField.getText();
+			String dNI = dniField.getText();
+			String nombre = nombreField.getText();
+			String apellidos = apellidosField.getText();
+			long numTarjeta = Long.parseLong(numeroTarjetaField.getText());
+
+			Cliente c = new Cliente(usuario, contra, email, dNI, nombre, apellidos, fechaNacimiento, numTarjeta);
+
+			GestorBD bd = new GestorBD();
+			bd.anadirNuevoCliente(c);
+			bd.desconectar();
+
+			String[] opciones = {"Sí", "No"};
+			int respuesta = JOptionPane.showOptionDialog( null, "¿Desea registrar un nuevo cliente?", "Registrar otro", JOptionPane.YES_NO_CANCEL_OPTION,
+					JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);	
+
+			switch (respuesta) {
+			case 0:
+				limpiarCajas();
+				break;
+			case 1:
+				volver();
+				dispose();
+				break;
+			default:
+				break;
+			}
+		} 
+		catch (NumberFormatException en) {
+			JOptionPane.showMessageDialog(this, "Por favor, introduzca un número de tarjeta");
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private boolean comprobarVacios() {
+		if (usuarioField.getText().equals("")) {
+			JOptionPane.showMessageDialog(this, "Por favor, introduzca un nombre de usuario");
+			return true;
+		}
+
+		if (new String(passwordField.getPassword()).equals("")) {
+			JOptionPane.showMessageDialog(this, "Por favor, introduzca una contraseña");
+			return true;
+		}
+
+		if (new String(passwordRField.getPassword()).equals("")) {
+			JOptionPane.showMessageDialog(this, "Por favor, repita su contraseña");
+			return true;
+		}
+
+		if (new String(emailField.getText()).equals("")) {
+			JOptionPane.showMessageDialog(this, "Por favor, introduzca un email de contacto");
+			return true;
+		}
+
+		if (new String(dniField.getText()).equals("")) {
+			JOptionPane.showMessageDialog(this, "Por favor, introduzca su DNI");
+			return true;
+		}
+
+		if (new String(nombreField.getText()).equals("")) {
+			JOptionPane.showMessageDialog(this, "Por favor, introduzca su nombre");
+			return true;
+		}
+
+		if (new String(apellidosField.getText()).equals("")) {
+			JOptionPane.showMessageDialog(this, "Por favor, introduzca al menos un apellido");
+			return true;
+		}
+
 		return false;
-		//TODO comprobar que no haya nada vacio
 	}
+	
 
 	private boolean comprobarContrasenas() {
-		return false;
-		//TODO comprobar que las contraseÃ±as coincidan
+		String contra1 = new String(passwordField.getPassword());
+		String contra2 = new String(passwordRField.getPassword());
+		if (contra1.equals(contra2)) {
+			return false;
+		} else {
+			JOptionPane.showMessageDialog(this, "Las contraseñas tienen que coincidir");
+			return true;
+		}
 	}
 
 	public static void abrirRegistrarCliente() {
