@@ -33,7 +33,7 @@ public class Inicio extends JFrame {
 		opcionesPanel.setLayout(new GridBagLayout());
 
 		buttonsBox = new Box(BoxLayout.Y_AXIS);
-		iniciarSesionButton = new JButton("Iniciar sesión");
+		iniciarSesionButton = new JButton("Iniciar sesion");
 		iniciarSesionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Login.abrirLogin();
@@ -44,7 +44,7 @@ public class Inicio extends JFrame {
 		registrarCuentaButton = new JButton("Registrar cuenta");
 		registrarCuentaButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegistrarCliente.abrirRegistrarCliente();
+				RegistrarCliente.abrirRegistrarCliente(null);
 			}
 		});
 
