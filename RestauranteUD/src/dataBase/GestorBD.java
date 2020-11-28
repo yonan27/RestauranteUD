@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ import java.util.List;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.JOptionPane;
 
 import model.Cliente;
 import model.Trabajador;
@@ -48,8 +51,49 @@ public class GestorBD {
 		} catch (SQLException e) {
 			log(Level.SEVERE, "Error al desconectar la base de datos", e);
 			e.printStackTrace();
+		
 		}
 	}
+
+	private void eliminar(String tabla) {
+		String sqlEliminar = "DELETE FROM " +  tabla;
+		Statement stmtEliminar;
+		try {
+			stmtEliminar = conn.createStatement();
+			stmtEliminar.executeUpdate(sqlEliminar);
+			log(Level.INFO, "eliminar tabla" + tabla+ "de la bd", null);
+			
+		} catch (SQLException e) {
+			log(Level.SEVERE, "error al eliminar la tabla"+ tabla+ "de la bd", e);
+	}
+	
+	}
+	public void importarFicheroBD(String tabla) {
+		eliminar(tabla);
+		switch(tabla) {
+		case "trabajador":
+			importarTrabajador();
+			break;
+		case "cliente":
+			importarCliente();
+			break;
+		default:
+			JOptionPane.showMessageDialog(null, "importar este fichero");
+			break;
+		}
+	}
+	
+	private void importarTrabajador() {
+		// TODO 
+		
+	}
+	
+	private void importarCliente() {
+		// TODO 
+		
+	}
+
+	
 
 	public Cliente iniciarSesionCliente(String usuario, String contra) {
 		List<Cliente> clientes = obtenerClientes();
@@ -125,7 +169,7 @@ public class GestorBD {
 
 			stmt.executeUpdate();
 
-			log(Level.INFO, "El cliente " + c.getNombre() + " ha sido añadido", null);
+			log(Level.INFO, "El cliente " + c.getNombre() + " ha sido anadido", null);
 		} catch (SQLException e) {
 			log(Level.SEVERE, "Error al insertar el cliente" + sql, e);
 			setLastError(e);

@@ -22,12 +22,11 @@ import com.toedter.calendar.JSpinnerDateEditor;
 
 import dataBase.GestorBD;
 import model.Cliente;
+import model.Trabajador;
 
 public class RegistrarCliente extends JFrame {
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 
 	private JPanel bienvenidaPanel;
@@ -66,7 +65,7 @@ public class RegistrarCliente extends JFrame {
 	private JButton cancelButton;
 	private Box buttonsBox;
 
-	public RegistrarCliente() {
+	public RegistrarCliente(Trabajador t) {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		bienvenidaPanel = new JPanel();
@@ -185,14 +184,14 @@ public class RegistrarCliente extends JFrame {
 		acceptButton = new JButton("Registrarme");
 		acceptButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				registrar();
+				registrar(t);
 			}
 		});
 
 		cancelButton = new JButton("Cancelar");
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				volver();
+				volver(t);
 			}
 		});
 
@@ -207,12 +206,23 @@ public class RegistrarCliente extends JFrame {
 		getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
 	}
 
-	private void volver() {
-		//TODO volver
+	private void volver(Trabajador t) {
+		if(t== null) {
+			Inicio.abrirInicio();
+			dispose();
+		}else{
+			if(t.isGerente()) {
+				VistaGerente.abrirVistaGerente(t);
+				dispose();
+			}else {
+				VistaTrabajador.abrirVistaTrabajador(t);
+				dispose();
+			}
+		}
 
 	}
 
-	private void limpiarCajas() {
+	private void limpiarCajas(Trabajador t) {
 		usuarioField.setText(null);
 		passwordField.setText(null);
 		passwordRField.setText(null);
@@ -223,7 +233,7 @@ public class RegistrarCliente extends JFrame {
 		numeroTarjetaField.setText(null);
 	}
 
-	private void registrar() {
+	private void registrar(Trabajador t ) {
 		try {
 
 			if (comprobarVacios()) {
@@ -249,16 +259,16 @@ public class RegistrarCliente extends JFrame {
 			bd.anadirNuevoCliente(c);
 			bd.desconectar();
 
-			String[] opciones = {"Sí", "No"};
-			int respuesta = JOptionPane.showOptionDialog( null, "¿Desea registrar un nuevo cliente?", "Registrar otro", JOptionPane.YES_NO_CANCEL_OPTION,
+			String[] opciones = {"Si", "No"};
+			int respuesta = JOptionPane.showOptionDialog( null, "Â¿Desea registrar un nuevo cliente?", "Registrar otro", JOptionPane.YES_NO_CANCEL_OPTION,
 					JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);	
 
 			switch (respuesta) {
 			case 0:
-				limpiarCajas();
+				limpiarCajas(t);
 				break;
 			case 1:
-				volver();
+				volver(t);
 				dispose();
 				break;
 			default:
@@ -266,7 +276,7 @@ public class RegistrarCliente extends JFrame {
 			}
 		} 
 		catch (NumberFormatException en) {
-			JOptionPane.showMessageDialog(this, "Por favor, introduzca un número de tarjeta");
+			JOptionPane.showMessageDialog(this, "Por favor, introduzca un nï¿½mero de tarjeta");
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -280,12 +290,12 @@ public class RegistrarCliente extends JFrame {
 		}
 
 		if (new String(passwordField.getPassword()).equals("")) {
-			JOptionPane.showMessageDialog(this, "Por favor, introduzca una contraseña");
+			JOptionPane.showMessageDialog(this, "Por favor, introduzca una contrasena");
 			return true;
 		}
 
 		if (new String(passwordRField.getPassword()).equals("")) {
-			JOptionPane.showMessageDialog(this, "Por favor, repita su contraseña");
+			JOptionPane.showMessageDialog(this, "Por favor, repita su contrasena");
 			return true;
 		}
 
@@ -319,16 +329,18 @@ public class RegistrarCliente extends JFrame {
 		if (contra1.equals(contra2)) {
 			return false;
 		} else {
-			JOptionPane.showMessageDialog(this, "Las contraseñas tienen que coincidir");
+			JOptionPane.showMessageDialog(this, "Las contrasenas tienen que coincidir");
 			return true;
 		}
 	}
 
-	public static void abrirRegistrarCliente() {
-		RegistrarCliente registrarCliente = new RegistrarCliente();
+	public static void abrirRegistrarCliente(Trabajador t) {
+		RegistrarCliente registrarCliente = new RegistrarCliente(t);
 		registrarCliente.setTitle("Registrate");
 		registrarCliente.setVisible(true);
 		registrarCliente.setSize(480,420);
 		registrarCliente.setLocationRelativeTo(null);
 	}
+
+	
 }
