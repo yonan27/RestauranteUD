@@ -76,13 +76,35 @@ public class GestorBD {
 			break;
 		case "cliente":
 			importarCliente();
+		case "menu":
+			importarMenu();
 			break;
 		default:
 			JOptionPane.showMessageDialog(null, "importar este fichero");
 			break;
 		}
 	}
+
+	public void exportarFicheroBD(String tabla) {
+		
+		switch(tabla) {
+		case "trabajador":
+			exportarTrabajador();
+			break;
+		case "cliente":
+			exportarCliente();
+			break;
+		case "menu":
+			exportarMenu();
+			break;
+		default:
+			JOptionPane.showMessageDialog(null, "exportar este fichero");
+			break;
+		}
+	}
 	
+	
+
 	private void importarTrabajador() {
 		// TODO 
 		
@@ -92,9 +114,24 @@ public class GestorBD {
 		// TODO 
 		
 	}
+	private void importarMenu() {
+		// TODO 
+		
+	}
+	private void exportarCliente() {
+		// TODO 
+		
+	}
 
-	
+	private void exportarTrabajador() {
+		// TODO 
+		
+	}
 
+	private void exportarMenu() {
+		// TODO 
+		
+	}
 	public Cliente iniciarSesionCliente(String usuario, String contra) {
 		List<Cliente> clientes = obtenerClientes();
 
