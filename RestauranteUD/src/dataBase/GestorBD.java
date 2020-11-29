@@ -1,6 +1,8 @@
 package dataBase;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -182,12 +184,58 @@ public class GestorBD {
 		// TODO
 	}
 	private void exportarCliente() {
-		// TODO 
+		FileWriter f = null;
+		List<Cliente> clientes = obtenerClientes();
+		try {
+			f = new FileWriter("fichero/clientesEx.csv");
+			for (Cliente c : clientes) {
+				String usuario = c.getUsuario();
+				String contra = c.getContra();
+				String email = c.getEmail();
+				String dni = c.getdNI();
+				String nombre = c.getNombre();
+				String apellidos = c.getApellidos();
+				String fechaNaciminetoS = c.getFechaNacimientoString();
+				long numTar = c.getNumTarjeta();
+				
+				f.write(usuario + ";" + contra + ";" + email + ";" + 
+						dni + ";" + nombre + ";" + apellidos + ";" + 
+						fechaNaciminetoS + ";" + numTar + ";");
+				log(Level.INFO, "cliente" + c.toString() +"ha sido exportado", null);
+			}
+			log(Level.INFO,"exportados", null);
+		} catch (IOException e) {
+			log(Level.SEVERE, " error al exportar ", e);
+			e.printStackTrace();
+		}
 		
 	}
 
 	private void exportarTrabajador() {
-		// TODO 
+		FileWriter f = null;
+		List<Trabajador> trabajadores = obtenerTrabajadores();
+		try {
+			f = new FileWriter("fichero/trabajadoresEx.csv");
+			for (Trabajador t : trabajadores) {
+				String usuario = t.getUsuario();
+				String contra = t.getContra();
+				String email = t.getEmail();
+				String dni = t.getdNI();
+				String nombre = t.getNombre();
+				String apellidos = t.getApellidos();
+				String fechaNaciminetoS = t.getFechaNacimientoString();
+				int sueldo = t.getSueldo();
+				boolean gerente = t.isGerente();
+				f.write(usuario + ";" + contra + ";" + email + ";" + 
+						dni + ";" + nombre + ";" + apellidos + ";" + 
+						fechaNaciminetoS + ";" + sueldo + ";"+ gerente+ ";");
+				log(Level.INFO, "trabajador" + t.toString() +"ha sido exportado", null);
+			}
+			log(Level.INFO,"exportados", null);
+		} catch (IOException e) {
+			log(Level.SEVERE, " error al exportar ", e);
+			e.printStackTrace();
+		}
 		
 	}
 
