@@ -1,5 +1,6 @@
 package dataBase;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -11,7 +12,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
+import java.util.Scanner;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,6 +20,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 import model.Cliente;
+import model.Menu;
 import model.Trabajador;
 
 public class GestorBD {
@@ -106,17 +108,78 @@ public class GestorBD {
 	
 
 	private void importarTrabajador() {
-		// TODO 
-		
+		List<Trabajador> trabajadores = new ArrayList<>();
+		File f = null;
+		Scanner sc = null;
+		try {
+			f = new File("fichero/trabajadores.csv");
+			sc = new Scanner(f);
+			while(sc.hasNextLine()) {
+				String linea = sc.nextLine();
+				Trabajador t = new Trabajador();
+				String[] campos = linea.split(";");
+				t.setUsuario(campos[0]);
+				t.setContra(campos[1]);
+				t.setEmail(campos[2]);
+				t.setdNI(campos[3]);
+				t.setNombre(campos[4]);
+				t.setApellidos(campos[5]);
+				t.setFechaNacimientoString((campos[6]));
+				t.setSueldo(Integer.parseInt(campos[7]));
+				t.setGerente(Boolean.parseBoolean(campos[8]));
+				trabajadores.add(t);
+			}
+			sc.close();
+			log(Level.INFO, " cargando trabajadores", null);
+		}catch (Exception e) {
+			log(Level.SEVERE,"error al cargar ",null);
+		}
+		Iterator<Trabajador> iterator = trabajadores.iterator();
+		while (iterator.hasNext()) {
+			Trabajador t =  iterator.next();
+			anadirNuevoTrabajador(t);
+			
+		}
+		log(Level.INFO, "anadidos", null);
 	}
 	
 	private void importarCliente() {
-		// TODO 
-		
+		List<Cliente> clientes = new ArrayList<Cliente>();
+		File f = null;
+		Scanner sc = null;
+		try {
+			f = new File("fichero/clientes.csv");
+			sc = new Scanner (f);
+			while (sc.hasNext()) {
+				String linea = (String) sc.next();
+				Cliente c = new Cliente();
+				String[] campos =  linea.split(";");
+				c.setUsuario(campos[0]);
+				c.setContra(campos[1]);
+				c.setEmail(campos[2]);
+				c.setdNI(campos[3]);
+				c.setNombre(campos[4]);
+				c.setApellidos(campos[5]);
+				c.setFechaNacimientoString(campos[6]);
+				c.setNumTarjeta(Long.parseLong(campos[7]));
+				clientes.add(c);
+				
+			}
+			sc.close();
+			log(Level.INFO, "cargando clientes", null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			log(Level.SEVERE, "error al cargar", null);
+		}
+		Iterator<Cliente> iterator = clientes.iterator();
+		while(iterator.hasNext()) {
+			Cliente c = iterator.next();
+			anadirNuevoCliente(c);
+		}
+		log(Level.INFO, "anadidos", null);
 	}
 	private void importarMenu() {
-		// TODO 
-		
+		// TODO
 	}
 	private void exportarCliente() {
 		// TODO 
