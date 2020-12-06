@@ -4,7 +4,7 @@ public class Suscripcion {
 	
 	private String nombre;
 	private int precio;
-	private int duracion; //En d�as
+	private int duracion; 
 	
 	
 	public Suscripcion(String nombre, int precio, int duracion) {
