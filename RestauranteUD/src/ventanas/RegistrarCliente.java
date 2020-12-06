@@ -91,7 +91,7 @@ public class RegistrarCliente extends JFrame {
 		usuarioBox.add(Box.createRigidArea(new Dimension(29, 12)));
 		usuarioBox.add(usuarioField);
 
-		passwordLabel = new JLabel("Contrase�a:");
+		passwordLabel = new JLabel("Contrasena:");
 		passwordField = new JPasswordField(12);
 
 		passwordBox = new Box(BoxLayout.X_AXIS);
@@ -99,7 +99,7 @@ public class RegistrarCliente extends JFrame {
 		passwordBox.add(Box.createRigidArea(new Dimension(71, 12)));
 		passwordBox.add(passwordField);
 
-		passwordRLabel = new JLabel("Repita la contrase�a:");
+		passwordRLabel = new JLabel("Repita la contrasena:");
 		passwordRField = new JPasswordField(12);
 
 		passwordRBox = new Box(BoxLayout.X_AXIS);
@@ -149,7 +149,7 @@ public class RegistrarCliente extends JFrame {
 		fechaNacimientoBox.add(Box.createRigidArea(new Dimension(39,0)));
 		fechaNacimientoBox.add(fechaNacimientoCalendario);
 
-		numeroTarjetaLabel = new JLabel("N�mero de tarjeta:");
+		numeroTarjetaLabel = new JLabel("Numero de tarjeta:");
 		numeroTarjetaField = new JTextField();
 
 		numeroTarjetaBox = new Box(BoxLayout.X_AXIS);
@@ -276,7 +276,7 @@ public class RegistrarCliente extends JFrame {
 			}
 		} 
 		catch (NumberFormatException en) {
-			JOptionPane.showMessageDialog(this, "Por favor, introduzca un n�mero de tarjeta");
+			JOptionPane.showMessageDialog(this, "Por favor, introduzca un numero de tarjeta");
 		}
 		catch (Exception e) {
 			e.printStackTrace();
