@@ -21,7 +21,7 @@ import javax.swing.JMenuItem;
 
 public class VistaTrabajador extends JFrame {
 
-	private static final long serialVersionUID = 1L;
+	
 	private JMenuBar barraM;
 	private JMenu clientesM;
 	private JMenu venderM;
@@ -30,7 +30,7 @@ public class VistaTrabajador extends JFrame {
 	private JMenuItem clientesI;
 	private JMenuItem clientesAddI;
 	private JMenuItem clientesEliminarI;
-	private JMenuItem clientesEnviar;
+	private JMenuItem clientesExportar;
 	
 
 	public VistaTrabajador (Trabajador t) {
@@ -73,13 +73,13 @@ public class VistaTrabajador extends JFrame {
 			
 		});
 		clientesEditarM.add(clientesEliminarI);
-		clientesEnviar = new JMenuItem("enviar");
-		clientesEnviar.addActionListener(new ActionListener() {
+		clientesExportar = new JMenuItem("exportar");
+		clientesExportar.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				GestorBD bd = new GestorBD();
-				
+				//TODO
 				
 			}
 		});
