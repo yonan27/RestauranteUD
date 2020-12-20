@@ -411,6 +411,9 @@ public class GestorBD {
 
 	}
 
+	
+	
+	
 	// Metodo publico para asignar un logger externo
 	public static void setLogger(Logger logger) {
 		GestorBD.logger = logger;
@@ -444,4 +447,5 @@ public class GestorBD {
 	public static void setLastError(Exception lastError) {
 		GestorBD.lastError = lastError;
 	}
+
 }
