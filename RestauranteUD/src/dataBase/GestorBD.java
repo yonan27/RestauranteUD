@@ -411,6 +411,10 @@ public class GestorBD {
 
 	}
 
+	public ResultSet TablaTrabajadores() {
+		
+		return null;
+	}
 	
 	
 	
