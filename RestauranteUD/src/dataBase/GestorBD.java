@@ -262,7 +262,7 @@ public class GestorBD {
 		}
 		return null;
 	}
-
+	//TODO
 	public List<Cliente> obtenerClientes() {
 
 		String sql = "SELECT usuario, contra, email, nombre , apellidos , fechaNacimiento,numTarjeta,suscrpcion ,FROM cliente";
@@ -297,7 +297,7 @@ public class GestorBD {
 		return clientes;
 
 	}
-
+	//TODO
 	public void anadirNuevoCliente(Cliente c) {
 		String sql = "INSERT INTO cliente (login, password, email, dNI, nombre, apellidos, fechaNacimiento, numTarjeta)"
 				+ " VALUES (?,?,?,?,?,?,?,?)";
@@ -324,7 +324,7 @@ public class GestorBD {
 			e.printStackTrace();
 		}
 	}
-
+	//TODO
 	public void anadirNuevoTrabajador(Trabajador t) {
 		String sql = "INSERT INTO trabajador (usuario, contrasena, email, nombre, apellidos, fechaNacimiento, sueldo, gerente)"
 				+ "VALUES(?,?,?,?,?,?,?,?,?)";
@@ -351,7 +351,7 @@ public class GestorBD {
 			e.printStackTrace();
 		}
 	}
-
+	
 	public Trabajador iniciarSesionTrabajador(String usuario, String contra) {
 		List<Trabajador> trabajadores = obtenerTrabajadores();
 
@@ -371,7 +371,8 @@ public class GestorBD {
 		}
 		return null;
 	}
-
+	
+	//TODO
 	public List<Trabajador> obtenerTrabajadores() {
 
 		String sql = "SELECT usuario, contra, email, nombre , apellidos , fechaNacimiento,sueldo, isGerente FROM trabajador";
