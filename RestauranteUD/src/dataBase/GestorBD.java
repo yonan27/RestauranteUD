@@ -60,7 +60,7 @@ public class GestorBD {
 	}
 
 	private void eliminar(String tabla) {
-		String sqlEliminar = "DELETE FROM " +  tabla;
+		String sqlEliminar = "DROP TABLE " +  tabla;
 		Statement stmtEliminar;
 		try {
 			stmtEliminar = conn.createStatement();
