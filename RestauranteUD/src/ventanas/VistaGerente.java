@@ -9,7 +9,6 @@ public class VistaGerente extends JFrame {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 
 	public VistaGerente (Trabajador t) {
 		//TODO ventana entera

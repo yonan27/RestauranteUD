@@ -416,8 +416,24 @@ public class GestorBD {
 		
 		return null;
 	}
-	
-	
+	public void eleminarPersona(String string, String dni) {
+		// TODO 
+		
+	}
+	public ResultSet rellenarTablaClientes() {
+		String sql = "SELECT NOMBRE, APELLIDO, EMAIL,DNI, USUARIO , CONTRASEÑA FROM CLIENTE";
+		PreparedStatement stmt;
+		try {
+			stmt = conn.prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery();
+			log(Level.INFO,"obteniendo",null);
+			return rs;
+		} catch (SQLException e) {
+			log(Level.SEVERE,"error",null);
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	// Metodo publico para asignar un logger externo
 	public static void setLogger(Logger logger) {
@@ -452,5 +468,6 @@ public class GestorBD {
 	public static void setLastError(Exception lastError) {
 		GestorBD.lastError = lastError;
 	}
+
 
 }
