@@ -416,7 +416,7 @@ public class GestorBD {
 		
 		return null;
 	}
-	public void eleminarPersona(String string, String dni) {
+	public void eliminarPersona(String string, String dni) {
 		// TODO 
 		
 	}
@@ -434,7 +434,10 @@ public class GestorBD {
 		}
 		return null;
 	}
-	
+	public ResultSet rellenarTablaTrabajador() {
+		// TODO 
+		return null;
+	}
 	// Metodo publico para asignar un logger externo
 	public static void setLogger(Logger logger) {
 		GestorBD.logger = logger;

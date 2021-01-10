@@ -64,7 +64,7 @@ public class TablaClientes extends JFrame {
 				case 0:
 					String dni = (String)modelo.getValueAt(tabla.getSelectedRow(), modelo.findColumn("dni"));
 					GestorBD bd = new GestorBD();
-					bd.eleminarPersona("cliente",dni);
+					bd.eliminarPersona("cliente",dni);
 					bd.desconectar();
 					TablaClientes.abrirTablaClientes(t);
 					dispose();
