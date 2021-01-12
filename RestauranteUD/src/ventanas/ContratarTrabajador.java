@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -12,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JSpinner;
@@ -20,6 +22,7 @@ import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JSpinnerDateEditor;
 
+import dataBase.GestorBD;
 import model.Trabajador;
 
 public class ContratarTrabajador extends JFrame {
@@ -219,13 +222,73 @@ public class ContratarTrabajador extends JFrame {
 	
 	private void contratar() {
 		try {
+		if(comprobarVacios()) {
+			return;
+		}
+		Date FeNac = FeNacChooser.getDate();
+		String usuario = usuarioText.getText();
+		String contrasena = new String(contrasenaField.getPassword());
+		String dni = dniField.getText();
+		String email = emailField.getText();
+		String nombre = nombreField.getText();
+		String apellido = apellidoField.getText();
+		int sueldo = Integer.parseInt(sueldoField.getText());
+		boolean isGerente = gerenteBox.isEnabled();
+		Trabajador t = new Trabajador(usuario,contrasena,dni, email,nombre, apellido,FeNac,sueldo,isGerente);
+		GestorBD bd = new GestorBD();
+		bd.anadirNuevoTrabajador(t);
+		bd.desconectar();
+		String[] opciones = {"si","no"};
+		int respuesta = JOptionPane.showOptionDialog( null, "¿quieres contratar otro trabajador?", "contratar", JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+		switch(respuesta) {
+		case 0:
+			limpiarCajas();
+		break;
+		case 1:
+			VistaGerente.abrirVistaGerente(t);
+			dispose();
+			default:
+			break;
+		}	
 		
+		}catch(NumberFormatException ex) {
+			JOptionPane.showMessageDialog(this,"introduzca el sueldo del trabajador");
+
 		} catch (Exception e) {
-			// TODO
+			e.printStackTrace();
 		}
 	}
-	private void comprobarVacios() {
-		//TODO
+	private boolean comprobarVacios() {
+		if(usuarioText.getText().equals("")) {
+			JOptionPane.showMessageDialog(this,"introduzca el usuario");
+			return true;
+		}
+		if (new String(contrasenaField.getPassword()).equals("")) {
+			JOptionPane.showMessageDialog(this, " introduzca la contraseña");
+			return true;
+		}
+		if(emailField.getText().equals("")) {
+			JOptionPane.showMessageDialog(this,"introduzca el e-mail");
+			return true;
+		}
+		if(dniField.getText().equals("")) {
+			JOptionPane.showMessageDialog(this,"introduzca el dni");
+			return true;
+		}
+		if(nombreField.getText().equals("")) {
+			JOptionPane.showMessageDialog(this,"introduzca el nombre");
+			return true;
+		}
+		if(apellidoField.getText().equals("")) {
+			JOptionPane.showMessageDialog(this,"introduzca el apellido");
+			return true;
+		}
+		if(sueldoField.getText().equals("")) {
+			JOptionPane.showMessageDialog(this,"introduzca el salario");
+			return true;
+		}
+		
+		return false;
 	}
 	public static void abrirContratarTrabajador(Trabajador t) {
 		ContratarTrabajador contratarTrabajador = new ContratarTrabajador(t);
