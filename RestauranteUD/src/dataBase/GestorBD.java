@@ -426,7 +426,7 @@ public class GestorBD {
 		try {
 			stmt = conn.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
-			log(Level.INFO,"obteniendo",null);
+			log(Level.INFO,"obteniendo clientes",null);
 			return rs;
 		} catch (SQLException e) {
 			log(Level.SEVERE,"error",null);
@@ -435,7 +435,17 @@ public class GestorBD {
 		return null;
 	}
 	public ResultSet rellenarTablaTrabajador() {
-		// TODO 
+		String sql ="SELECT NOMBRE, APELLIDO, EMAIL,DNI, USUARIO , FENAC, SALARIO, ISGERENTE FROM TRABAJADOR";
+		PreparedStatement stmt;
+		try {
+			stmt = conn.prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery();
+			log(Level.INFO, "obteniendo trabajadores", null);
+			return rs;
+		} catch (SQLException e) {
+			log(Level.SEVERE, "error", e);
+			e.printStackTrace();
+		}
 		return null;
 	}
 	// Metodo publico para asignar un logger externo
