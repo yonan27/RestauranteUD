@@ -32,6 +32,7 @@ public class VistaTrabajador extends JFrame {
 	private JMenuItem clientesEliminarI;
 	private JMenuItem clientesExportar;
 	
+	
 
 	public VistaTrabajador (Trabajador t) {
 		
@@ -79,8 +80,8 @@ public class VistaTrabajador extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				GestorBD bd = new GestorBD();
-				//TODO
-				
+				bd.exportarBDFichero("cliente");
+				bd.desconectar();
 			}
 		});
 		

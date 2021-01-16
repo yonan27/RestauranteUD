@@ -235,6 +235,14 @@ public class GestorBD {
 		} catch (IOException e) {
 			log(Level.SEVERE, " error al exportar ", e);
 			e.printStackTrace();
+		}finally {
+			try {
+				if (f !=null) {
+					f.close();
+				}
+			} catch (IOException e) {
+				log(Level.SEVERE, "error al cerrar el documento de exportar ", e);
+			}
 		}
 		
 	}
@@ -433,6 +441,23 @@ public class GestorBD {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	public void exportarBDFichero(String tabla) {
+		switch(tabla) {
+		case "trabajador":
+			exportarTrabajador();
+			break;
+		case "cliente":
+			exportarCliente();
+			break;
+		case "menu":
+			exportarMenu();
+			break;
+		default:
+				JOptionPane.showMessageDialog(null, "contacte con el servicio para importar este fichero");
+				break;
+		}
+		
 	}
 	public ResultSet rellenarTablaTrabajador() {
 		String sql ="SELECT NOMBRE, APELLIDO, EMAIL,DNI, USUARIO , FENAC, SALARIO, ISGERENTE FROM TRABAJADOR";
