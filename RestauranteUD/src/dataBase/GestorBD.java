@@ -424,8 +424,18 @@ public class GestorBD {
 		
 		return null;
 	}
-	public void eliminarPersona(String string, String dni) {
-		// TODO 
+	public void eliminarPersona(String tabla, String dni) {
+		String sqlBorrar= "DELETE FROM" + tabla +"WHERE DNI";
+		PreparedStatement stmtBorrar;
+		try {
+			stmtBorrar = conn.prepareStatement(sqlBorrar);
+			stmtBorrar.setString(1,dni);
+			stmtBorrar.executeUpdate();
+			log(Level.INFO, "el" + tabla + "con dni" + dni + "ha sido borrado", null);
+		} catch (SQLException e) {
+			log(Level.SEVERE, "no ha sido borrado" + tabla+ "con dni" + dni , e);
+			e.printStackTrace();
+		}
 		
 	}
 	public ResultSet rellenarTablaClientes() {
