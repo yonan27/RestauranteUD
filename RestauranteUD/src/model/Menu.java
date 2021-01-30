@@ -3,41 +3,63 @@ package model;
 public class Menu {
 
 	
-	protected boolean semanal ;
-	protected boolean finDeSemana;
-	protected Cliente consumidor;
+	protected String primerPlato ;
+	protected String segundoPlato;
+	protected String bebida;
+	protected int precio;
 	
-	public Menu(boolean semanal, boolean finDeSemana, Cliente consumidor) {
+	public Menu(String primerPlato, String segundoPlato, String bebida, int precio) {
 		super();
-		this.semanal = semanal;
-		this.finDeSemana = finDeSemana;
-		this.consumidor = consumidor;
+		this.primerPlato = primerPlato;
+		this.segundoPlato = segundoPlato;
+		this.bebida = bebida;
+		this.precio = precio;
 	}
+	
 	public Menu() {
 		super();
-		this.semanal = false;
-		this.finDeSemana = false;
-		this.consumidor = null;
+		this.primerPlato = "";
+		this.segundoPlato = "";
+		this.bebida = "";
+		this.precio = 0;
 	}
 
-	public boolean isSemanal() {
-		return semanal;
+	public String getPrimerPlato() {
+		return primerPlato;
 	}
-	public void setSemanal(boolean semanal) {
-		this.semanal = semanal;
+
+	public void setPrimerPlato(String primerPlato) {
+		this.primerPlato = primerPlato;
 	}
-	public boolean isFinDeSemana() {
-		return finDeSemana;
+
+	public String getSegundoPlato() {
+		return segundoPlato;
 	}
-	public void setFinDeSemana(boolean finDeSemana) {
-		this.finDeSemana = finDeSemana;
+
+	public void setSegundoPlato(String segundoPlato) {
+		this.segundoPlato = segundoPlato;
 	}
-	public Cliente getConsumidor() {
-		return consumidor;
+
+	public String getBebida() {
+		return bebida;
 	}
-	public void setConsumidor(Cliente consumidor) {
-		this.consumidor = consumidor;
+
+	public void setBebida(String bebida) {
+		this.bebida = bebida;
 	}
+
+	public int getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(int precio) {
+		this.precio = precio;
+	}
+	
+	
+	
+	
+	
 	
 	
 }
