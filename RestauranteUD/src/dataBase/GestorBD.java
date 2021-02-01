@@ -181,8 +181,59 @@ public class GestorBD {
 		log(Level.INFO, "anadidos", null);
 	}
 	private void importarMenu() {
-		// TODO
+		List<Menu> menus = new ArrayList<Menu>();
+		File f= null;
+		Scanner sc = null;
+		try {
+			f = new File("ficheros/menu.csv");
+			sc = new Scanner(f);
+			while (sc.hasNextLine()) {
+				String linea = sc.nextLine();
+				
+			Menu m = new Menu();
+			String[] campos = linea.split(";") ;
+			m.setSemanal(Boolean.parseBoolean(campos[0]));
+			m.setFinDeSemana(Boolean.parseBoolean(campos[1]));
+			m.setConsumidor(null);
+			menus.add(m);
+		}	
+		log(Level.INFO, "menus cargados desde el fichero", null);		
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			log(Level.SEVERE, "error al cargar", null);
+		}finally {
+			sc.close();
+		}
+		Iterator<Menu> me = menus.iterator();
+		while (me.hasNext()) {
+			Menu m =  me.next();
+			anadirNuevoMenu(m);
+		}
+		log(Level.INFO,"menus añadidos a la BD", null);
 	}
+	private void anadirNuevoMenu(Menu m) {
+		String sql = "INSERT INTO MENU (SEMANAL, FINDESEMANA, CONSUMIDOR)"+ "VALUES(?,?,?)";
+		PreparedStatement stmt;
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setBoolean(1, m.isSemanal());
+			stmt.setBoolean(2, m.isFinDeSemana());
+			
+			if (m.isFinDeSemana()) {
+				stmt.setBoolean(1, m.isSemanal());
+			}else {
+				stmt.setBoolean(2, m.isFinDeSemana());
+			}
+			stmt.executeUpdate();
+			log(Level.INFO, "el menu" + m.toString()+ "ha sido anadido", null);
+		} catch (SQLException e) {
+			log(Level.SEVERE, "erro al insertar el menu", null);
+			setLastError(e);
+			e.printStackTrace();
+		}
+	}
+
 	private void exportarCliente() {
 		FileWriter f = null;
 		List<Cliente> clientes = obtenerClientes();
@@ -248,9 +299,89 @@ public class GestorBD {
 	}
 
 	private void exportarMenu() {
-		// TODO 
-		
+		FileWriter f = null;
+		List<Menu> menus = obtenerMenus();
+		try {
+			f = new FileWriter("ficheros/menusExp.csv");
+
+			for (Menu m : menus) {
+				boolean semanal = m.isSemanal();
+				boolean findesemana = m.isFinDeSemana();
+
+				f.write(semanal + ";" + findesemana + ";" + "\n");
+
+				log(Level.INFO, "El menu " + m.toString() + " se ha exportado ", null);
+			}
+
+			log(Level.INFO, "menus exportados ", null);
+		} catch (IOException e) {
+			log(Level.SEVERE, "Error al abrir el fichero para exportar menus", e);
+			e.printStackTrace();
+		} finally {
+			try {
+				if(f != null) {
+					f.close();
+				}
+			} catch (IOException e) {
+				log(Level.SEVERE, "Error al cerrar el fichero de exportar menus", e);
+				e.printStackTrace();
+			}
+		}
 	}
+		
+	private List<Menu> obtenerMenus() {
+		String sql = "SELECT SEMANAL, FINDESEMANA, CONSUMIDOR FROM MENU";
+		PreparedStatement stmt;
+
+		List<Menu> menus = new ArrayList<Menu>();
+
+		try {
+			stmt = conn.prepareStatement(sql);
+
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()){
+
+				Menu m = new Menu();
+				m.setSemanal(rs.getBoolean("Semanal"));
+				m.setFinDeSemana(rs.getBoolean("FinDeSemana"));
+				m.setConsumidor(null);
+				
+				if (rs.getBoolean("Semanal") == false) {
+					m.setSemanal(false);
+				} else {
+					m.setSemanal(true);
+				}
+
+				menus.add(m);
+			}
+
+			log(Level.INFO, "Obteniendo los menus", null);
+		} catch (SQLException e) {
+			log(Level.SEVERE, "Error al obtener los menus", e);
+			e.printStackTrace();
+		}
+		return menus;
+	}
+
+	public ResultSet rellenarTablaVentaMenu() {
+		String sql = "SELECT SEMANAL, FINDESEMANA FROM VENTAMENU";
+		PreparedStatement stmt;
+
+		try {
+			stmt = conn.prepareStatement(sql);
+
+			ResultSet rs = stmt.executeQuery();
+
+			log(Level.INFO, "Obteniendo las ventas del menu", null);
+			return rs;
+		} catch (SQLException e) {
+			log(Level.SEVERE, "Error al obtener las ventas del menu", e);
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public Cliente iniciarSesionCliente(String usuario, String contra) {
 		List<Cliente> clientes = obtenerClientes();
 
@@ -483,6 +614,24 @@ public class GestorBD {
 		}
 		return null;
 	}
+	
+	public void eliminarVenta(String nombreC, String nombreM,boolean semanal, boolean finDeSemana) {
+		
+		String sqlBorrar = "DELETE FROM " + nombreC + "WHERE DNI = xxxxxxx ";
+		PreparedStatement stmtBorrar;
+		try {
+			stmtBorrar = conn.prepareStatement(sqlBorrar);
+			stmtBorrar.setString(1, nombreC);
+			stmtBorrar.setBoolean(2,semanal);
+			stmtBorrar.setBoolean(3,finDeSemana);
+			stmtBorrar.executeUpdate();
+			log(Level.INFO, "la venta del menu"+semanal+"hecha por el cliente"+nombreC+"ha sido eliminada", null);
+		} catch (Exception e) {
+			log(Level.SEVERE, "no se ha podido eliminar la venta del menu"+semanal+"hecha por el cliente"+ nombreC, e);
+			e.printStackTrace();
+		}
+	}
+	
 	// Metodo publico para asignar un logger externo
 	public static void setLogger(Logger logger) {
 		GestorBD.logger = logger;
